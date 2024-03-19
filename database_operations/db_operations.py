@@ -1,8 +1,9 @@
 import logger as log
 from models.model import frames
-import pandas as pd
-
 from validator import Validate
+
+import pandas as pd
+#------------------------------importing complete-----------------------------------
 
 class DatabaseOperations:
     
@@ -16,19 +17,22 @@ class DatabaseOperations:
         try:
             cursor.execute("DROP DATABASE IF EXISTS sales_outlook")
             cursor.execute("CREATE DATABASE sales_outlook")
-            print("Database created. \n")
-            log.make_entry("Database created")
-
-
+        
         except Exception as e:
             print(str(e))
             log.make_entry("{}: {}".format(type(e).__name__, str(e)))
+        
+        else:
+            print("Database created. \n")
+            log.make_entry("Database created")
     
     
     #populates the database from .csv files
     def db_populate(self, conn, cursor):
         try:
             vld = Validate()
+            
+            #-----------
             #-----------Region table
             df = frames[0]
             cursor.execute("CREATE TABLE regions (region_id TINYINT NOT NULL, region_name VARCHAR(40) NOT NULL, PRIMARY KEY(region_id) );")
@@ -44,6 +48,7 @@ class DatabaseOperations:
             print("Regions table populated. \n")
             log.make_entry(f"No. of acceptable rows in Regions = {self.acceptable_reg}/{df.shape[0]}")
 
+            #-----------
             #-----------Products table
             df = frames[1]
             cursor.execute("CREATE TABLE products (product_id SMALLINT NOT NULL,\
@@ -62,6 +67,7 @@ class DatabaseOperations:
             print("Products table populated. \n")
             log.make_entry(f"No. of acceptable rows in Products = {self.acceptable_prd}/{df.shape[0]}")
 
+            #-----------
             #-----------Customers table
             df = frames[2]
             cursor.execute("CREATE TABLE customers (customer_id SMALLINT NOT NULL,\
@@ -80,6 +86,8 @@ class DatabaseOperations:
             conn.commit()
             print("Customers table populated. \n")
             log.make_entry(f'No. of acceptable rows in Customers = {self.acceptable_cust}/{df.shape[0]}')
+            
+            #-----------
             #-----------Sales table
             df = frames[3]
             df.date = pd.to_datetime(df.date)
@@ -106,4 +114,4 @@ class DatabaseOperations:
 
         except Exception as e:
             print(str(e))
-            log.make_entry("{}: {}".format(type(e).__name__, str(e)))
+            log.make_entry("ERROR: {}: {}".format(type(e).__name__, str(e)))

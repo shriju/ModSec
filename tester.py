@@ -1,5 +1,6 @@
 import unittest
 import validator
+#------------------------------importing complete-----------------------------------
 
 class Test_Validator(unittest.TestCase):
     @classmethod
@@ -17,7 +18,7 @@ class Test_Validator(unittest.TestCase):
         self.assertEqual(False, self.obj.valid_email("Abc@.com"))
         self.assertEqual(False, self.obj.valid_email("1@7@company.com"))
 
-    def test_name(self):
+    def test_name_cust(self):
         self.assertEqual(True, self.obj.valid_nameof_cust("Abc Def"))
         self.assertEqual(False, self.obj.valid_nameof_cust("Abc"))
     

@@ -1,4 +1,6 @@
+import logger as log
 import mysql.connector
+#------------------------------importing complete-----------------------------------
 
 class Connection:
     def make_connection(self, db_name=None):
@@ -11,6 +13,7 @@ class Connection:
             )
         except Exception as e:
             print(type(e).__name__, e)
+            log.make_entry("ERROR: {}: {}".format(type(e).__name__, str(e)))
         else:
             cursor = conn.cursor()
             return (conn, cursor)   # return connection and cursor objects
